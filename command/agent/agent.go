@@ -220,9 +220,15 @@ func (a *Agent) consulConfig() *consul.Config {
 		base.SerfLANConfig.MemberlistConfig.BindPort = a.config.Ports.SerfLan
 		base.SerfLANConfig.MemberlistConfig.AdvertisePort = a.config.Ports.SerfLan
 	}
+	if a.config.Ports.AdvertiseLAN != 0 {
+		base.SerfLANConfig.MemberlistConfig.AdvertisePort = a.config.Ports.AdvertiseLAN
+	}
 	if a.config.Ports.SerfWan != 0 {
 		base.SerfWANConfig.MemberlistConfig.BindPort = a.config.Ports.SerfWan
 		base.SerfWANConfig.MemberlistConfig.AdvertisePort = a.config.Ports.SerfWan
+	}
+	if a.config.Ports.AdvertiseWAN != 0 {
+		base.SerfWANConfig.MemberlistConfig.AdvertisePort = a.config.Ports.AdvertiseWAN
 	}
 	if a.config.BindAddr != "" {
 		bindAddr := &net.TCPAddr{

@@ -28,6 +28,8 @@ type PortConfig struct {
 	SerfLan int `mapstructure:"serf_lan"` // LAN gossip (Client + Server)
 	SerfWan int `mapstructure:"serf_wan"` // WAN gossip (Server onlyg)
 	Server  int // Server internal RPC
+	AdvertiseLAN int `mapstructure:"advertise_serf_lan"`// Port to advertise
+	AdvertiseWAN int `mapstructure:"advertise_serf_wan"`//
 }
 
 // AddressConfig is used to provide address overrides
@@ -433,6 +435,8 @@ func DefaultConfig() *Config {
 			SerfLan: consul.DefaultLANSerfPort,
 			SerfWan: consul.DefaultWANSerfPort,
 			Server:  8300,
+			AdvertiseLAN: consul.DefaultLANSerfPort,
+			AdvertiseWAN: consul.DefaultWANSerfPort,
 		},
 		DNSConfig: DNSConfig{
 			MaxStale: 5 * time.Second,
@@ -876,6 +880,12 @@ func MergeConfig(a, b *Config) *Config {
 	}
 	if b.Ports.Server != 0 {
 		result.Ports.Server = b.Ports.Server
+	}
+	if b.Ports.AdvertiseLAN != 0 {
+		result.Ports.AdvertiseLAN = b.Ports.AdvertiseLAN
+	}
+	if b.Ports.AdvertiseWAN != 0 {
+		result.Ports.AdvertiseWAN = b.Ports.AdvertiseWAN
 	}
 	if b.Addresses.DNS != "" {
 		result.Addresses.DNS = b.Addresses.DNS
